@@ -6,14 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,12 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 
 class MainActivity : ComponentActivity() {
     private val viewModel: NavigationViewModel by viewModels()
@@ -84,21 +82,19 @@ fun CategoryList(viewModel: NavigationViewModel) {
                     .clickable { viewModel.navigateTo(category.title) }
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(R.drawable.ic_launcher_background),
                     contentDescription = "Category Background",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
                 Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(5.dp),
+                    modifier = Modifier.fillMaxSize(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = category.image),
+                        painter = painterResource(category.image),
                         contentDescription = "Category Icon",
-                        modifier = Modifier.fillMaxHeight()
+                        modifier = Modifier.size(100.dp)
                     )
                     Text(
                         text = category.title,
@@ -127,7 +123,7 @@ fun ItemInformation(viewModel: NavigationViewModel) {
                 .padding(8.dp)
         ) {
             Image(
-                painter = painterResource(id = currentItem.image),
+                painter = painterResource(currentItem.image),
                 contentDescription = "Item Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth()
@@ -138,6 +134,7 @@ fun ItemInformation(viewModel: NavigationViewModel) {
             Text(
                 text = viewModel.currentPath,
                 fontSize = 52.sp,
+                lineHeight = 60.sp,
                 fontWeight = FontWeight(700)
             )
 
