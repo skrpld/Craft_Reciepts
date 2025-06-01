@@ -40,11 +40,19 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onBackPressed() {
+        if (viewModel.currentPath != "Main") {
+            viewModel.navigateBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
 
 @Composable
 fun CategoryList(viewModel: NavigationViewModel) {
-    var categories = viewModel.categories[viewModel.currentPath]
+    var categories = viewModel.categories[viewModel.currentPath] ?: return
 
     LazyColumn(
         modifier = Modifier
@@ -58,7 +66,52 @@ fun CategoryList(viewModel: NavigationViewModel) {
                     .fillMaxWidth()
                     .height(120.dp)
                     .padding(8.dp)
-                    .clickable { viewModel.currentPath = category.title }
+                    .clickable { viewModel.navigateTo(category.title)}
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = "Category Background",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Image(
+                        painter = painterResource(id = category.image),
+                        contentDescription = "Category Icon",
+                    )
+                    Text(
+                        text = category.title,
+                        fontSize = 36.sp,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ItemInformation(viewModel: NavigationViewModel) {
+    var categories = viewModel.categories[viewModel.currentPath] ?: return
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+    ) {
+        items(categories!!.size) { index ->
+            val category = categories[index]
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .padding(8.dp)
+                    .clickable { viewModel.navigateTo(category.title)}
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_background),
@@ -76,7 +129,7 @@ fun CategoryList(viewModel: NavigationViewModel) {
                     Image(
                         painter = painterResource(id = category.image),
                         contentDescription = "Category Icon",
-                                                )
+                    )
                     Text(
                         text = category.title,
                         fontSize = 36.sp,
