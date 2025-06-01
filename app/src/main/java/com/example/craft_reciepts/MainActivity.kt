@@ -26,6 +26,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Button
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 class MainActivity : ComponentActivity() {
     private val viewModel: NavigationViewModel by viewModels()
@@ -52,21 +60,28 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CategoryList(viewModel: NavigationViewModel) {
-    var categories = viewModel.categories[viewModel.currentPath] ?: return
+    val currentPath = viewModel.currentPath
+
+    if (viewModel.item.containsKey(currentPath)) {
+        ItemInformation(viewModel = viewModel)
+        return
+    }
+
+    val categories = viewModel.categories[currentPath] ?: return
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .systemBarsPadding()
+            .statusBarsPadding()
     ) {
-        items(categories!!.size) { index ->
+        items(categories.size) { index ->
             val category = categories[index]
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp)
                     .padding(8.dp)
-                    .clickable { viewModel.navigateTo(category.title)}
+                    .clickable { viewModel.navigateTo(category.title) }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_background),
@@ -77,17 +92,19 @@ fun CategoryList(viewModel: NavigationViewModel) {
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
+                        .padding(5.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
                         painter = painterResource(id = category.image),
                         contentDescription = "Category Icon",
+                        modifier = Modifier.fillMaxHeight()
                     )
                     Text(
                         text = category.title,
                         fontSize = 36.sp,
+                        lineHeight = 42.sp,
+                        modifier = Modifier.padding(start = 16.dp)
                     )
                 }
             }
@@ -97,44 +114,51 @@ fun CategoryList(viewModel: NavigationViewModel) {
 
 @Composable
 fun ItemInformation(viewModel: NavigationViewModel) {
-    var categories = viewModel.categories[viewModel.currentPath] ?: return
+    val currentItem = viewModel.item[viewModel.currentPath] ?: return
 
-    LazyColumn(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .systemBarsPadding()
+            .statusBarsPadding()
     ) {
-        items(categories!!.size) { index ->
-            val category = categories[index]
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .padding(8.dp)
-                    .clickable { viewModel.navigateTo(category.title)}
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        ) {
+            Image(
+                painter = painterResource(id = currentItem.image),
+                contentDescription = "Item Image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = viewModel.currentPath,
+                fontSize = 52.sp,
+                fontWeight = FontWeight(700)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = currentItem.text,
+                fontSize = 36.sp,
+                lineHeight = 42.sp
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Button(
+                onClick = { viewModel.navigateBack() },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "Item Background",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                Text(
+                    text = "Back",
+                    fontSize = 36.sp
                 )
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Image(
-                        painter = painterResource(id = category.image),
-                        contentDescription = "Category Icon",
-                    )
-                    Text(
-                        text = category.title,
-                        fontSize = 36.sp,
-                    )
-                }
             }
         }
     }
