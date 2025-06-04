@@ -1,7 +1,7 @@
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.craft_reciepts.data_classes.CategoriesData
-import com.example.craft_reciepts.data_classes.ItemData
+import com.example.craft_reciepts.data.repository.CategoriesData
+import com.example.craft_reciepts.data.repository.ItemData
 import com.example.craft_reciepts.R
 
 class NavigationViewModel : ViewModel() {
