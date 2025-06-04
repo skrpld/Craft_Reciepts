@@ -1,4 +1,4 @@
-package com.example.craft_reciepts
+package com.example.craft_reciepts.data_classes
 
 import androidx.annotation.DrawableRes
 

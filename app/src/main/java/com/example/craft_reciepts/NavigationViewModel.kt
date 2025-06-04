@@ -1,7 +1,7 @@
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.craft_reciepts.CategoriesData
-import com.example.craft_reciepts.ItemData
+import com.example.craft_reciepts.data_classes.CategoriesData
+import com.example.craft_reciepts.data_classes.ItemData
 import com.example.craft_reciepts.R
 
 class NavigationViewModel : ViewModel() {
@@ -145,6 +145,8 @@ class NavigationViewModel : ViewModel() {
         "Rotten Flesh" to ItemData("Dropped by zombies. Has 80% chance to give hunger effect. Restores 4 hunger points.", R.drawable.rotten_flesh),
         "Spider Eye" to ItemData("Dropped by spiders. Gives poison effect. Restores 2 hunger points.", R.drawable.spider_eye),
         "Fermented Spider Eye" to ItemData("Crafted with spider eye, sugar, and brown mushroom. Used for potions.", R.drawable.fermented_spider_eye),
-        "Cake" to ItemData("Crafted with wheat, sugar, milk, and egg. Placed block that can be eaten 7 times (1 slice = 2 hunger points).", R.drawable.cake)
+        "Cake" to ItemData("Crafted with wheat, sugar, milk, and egg. Placed block that can be eaten 7 times (1 slice = 2 hunger points).",
+            R.drawable.cake
+        )
     )
 }
